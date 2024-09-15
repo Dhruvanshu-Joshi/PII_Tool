@@ -1,9 +1,11 @@
 import sys
 import os
 from PyQt6.QtWidgets import QApplication
-from screens.home import FullScreenWindow
-from screens.screen2 import chooseScreenWindow
-from screens.screen3 import ResultWindow
+from home import FullScreenWindow
+from screen2 import chooseScreenWindow
+from screen3 import ResultWindow
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from src.analyse import *
 from src.fetch_data import fetch_data
@@ -18,14 +20,28 @@ class ScreenManager:
     def show_home_screen(self):
         if self.window:
             self.window.close()  # Close any currently open window
-        self.window = FullScreenWindow('resources/home.jpeg')
+        screen_dir = os.path.dirname(__file__)
+
+        # Construct the relative path to img.png
+        img_path = os.path.join(screen_dir, '..', 'resources', 'home.jpeg')
+
+        # Convert to absolute path (optional, but safer)
+        img_path = os.path.abspath(img_path)
+        self.window = FullScreenWindow(img_path)
         self.window.navigate_next.connect(self.show_choose_screen)
         self.window.show()
 
     def show_choose_screen(self):
         if self.window:
             self.window.close()  # Close the home screen
-        self.window = chooseScreenWindow('resources/bg.png')
+        screen_dir = os.path.dirname(__file__)
+
+        # Construct the relative path to img.png
+        img_path = os.path.join(screen_dir, '..', 'resources', 'bg.png')
+
+        # Convert to absolute path (optional, but safer)
+        img_path = os.path.abspath(img_path)
+        self.window = chooseScreenWindow(img_path)
         self.window.navigate_next.connect(self.handle_next)
         self.window.navigate_previous.connect(self.show_home_screen)
         self.window.show()

@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 import pandas as pd
+import time  # Import time module for delay
 # from pii_codex.services.analysis_service import PIIAnalysisService
 
 # # Data extracted from the output
@@ -125,12 +126,15 @@ def visualise(texts, analysis_results):
     angles_radar = np.concatenate((angles, [angles[0]]))
 
     # Create a polar projection for the radar chart
-    plt.figure(figsize=(8, 8))
+    plt.figure(figsize=(10, 6))
     ax_radar = plt.subplot(projection='polar')
     ax_radar.plot(angles_radar, risk_scores_radar, color='red', linewidth=2)
     ax_radar.fill(angles_radar, risk_scores_radar, color='red', alpha=0.25)
     plt.title('Radar Chart for Risk Scores')
     plt.yticks([])  # Optional: Remove radial labels
+
+    # manager = plt.get_current_fig_manager()
+    # manager.full_screen_toggle()
     plt.show()
 
     # Remove None values and corresponding frequencies
@@ -141,7 +145,7 @@ def visualise(texts, analysis_results):
     assert len(filtered_pii_types) == len(filtered_pii_frequencies), "Lengths of filtered types and frequencies must match."
 
     # Visualization 6: Pie Chart for PII Frequencies
-    plt.figure(figsize=(8, 8))
+    plt.figure(figsize=(10, 6))
     plt.pie(filtered_pii_frequencies, labels=filtered_pii_types, autopct='%1.1f%%', startangle=140, colors=sns.color_palette("coolwarm", len(filtered_pii_types)))
     plt.title('Detected PII Types')
     plt.show()
